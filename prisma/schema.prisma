@@ -24,6 +24,8 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
+  city String
+
   @@unique([email])
   @@map("user")
 }
