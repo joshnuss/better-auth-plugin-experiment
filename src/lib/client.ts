@@ -1,24 +1,7 @@
 import type { BetterAuthClientPlugin } from "better-auth/client";
-import type { myPlugin } from "./plugin";
-import type { BetterFetchOption } from "@better-fetch/fetch";
+import type { username } from "./plugin";
 
-export const myPluginClient = {
-  id: "my-plugin",
-  $InferServerPlugin: {} as ReturnType<typeof myPlugin>,
-  getActions: ($fetch) => {
-    return {
-      myCustomAction: async (data: {
-        foo: string,
-      }, fetchOptions?: BetterFetchOption) => {
-        const res = $fetch("/custom/action", {
-          method: "POST",
-          body: {
-            foo: data.foo
-          },
-          ...fetchOptions
-        })
-        return res
-      }
-    }
-  }
+export const usernameClient = {
+  id: "username",
+  $InferServerPlugin: {} as ReturnType<typeof username>,
 } satisfies BetterAuthClientPlugin

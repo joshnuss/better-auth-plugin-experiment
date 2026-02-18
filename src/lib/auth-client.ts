@@ -1,11 +1,11 @@
 import { createAuthClient } from 'better-auth/svelte'
 import { PUBLIC_ORIGIN } from '$env/static/public'
-import { myPluginClient } from './client'
+import { usernameClient } from './client'
 
 export const auth = createAuthClient({
   baseURL: PUBLIC_ORIGIN,
   plugins: [
-    myPluginClient
+    usernameClient
   ]
 })
 

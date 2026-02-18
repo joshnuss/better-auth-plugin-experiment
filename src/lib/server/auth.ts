@@ -4,7 +4,7 @@ import { db } from '$lib/server/db'
 import { PUBLIC_ORIGIN } from '$env/static/public'
 import { getRequestEvent } from '$app/server'
 import { sveltekitCookies } from 'better-auth/svelte-kit'
-import { myPlugin } from '../plugin'
+import { username } from '../plugin'
 
 export const auth = betterAuth({
   baseURL: PUBLIC_ORIGIN,
@@ -15,15 +15,10 @@ export const auth = betterAuth({
     enabled: true
   },
   plugins: [
-    myPlugin(),
+    username(),
     sveltekitCookies(getRequestEvent) // must be last
   ]
 })
-
-// auth.api.example22({
-//   query: {
-//   }
-// })
 
 export type Session = (typeof auth.$Infer.Session)['session']
 export type User = (typeof auth.$Infer.Session)['user']
