@@ -1,9 +1,9 @@
 import type { BetterAuthPlugin } from "better-auth"
 import { sessionMiddleware, createAuthMiddleware } from "better-auth/api"
+import { APIError } from "@better-auth/core/error";
 import { createAuthEndpoint } from 'better-auth/plugins'
 import { z } from 'zod'
 import type { User } from "@better-auth/core/db";
-
 
 export const username = () =>
   ({
@@ -21,14 +21,38 @@ export const username = () =>
       }
     },
     endpoints: {
-      signInUsername: createAuthEndpoint('/sign-in/username2', {
+      signInUsername: createAuthEndpoint('/sign-in/username', {
         method: 'POST',
         body: z.object({
           username: z.string(),
           password: z.string(),
-          age: z.number()
         })
       }, async (ctx) => {
+        const { username, password } = ctx.body
+        const { adapter } = ctx.context
+
+        let user: User | null
+
+        if (username.includes('@')) {
+          user = await adapter.findOne<User>({
+            model: 'user',
+            where: [
+              { field: 'email', value: username }
+            ]
+          })
+        } else {
+          user = await adapter.findOne<User>({
+            model: 'user',
+            where: [
+              { field: 'username', value: username }
+            ]
+          })
+        }
+
+        if (!user) {
+          return ctx.error()
+        }
+
         ctx.redirect('/home')
       }),
       isUsernameTaken: createAuthEndpoint('/username', {

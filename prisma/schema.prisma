@@ -24,10 +24,11 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  city String
+  username String
 
   @@unique([email])
   @@map("user")
+  @@unique([username])
 }
 
 model Session {
